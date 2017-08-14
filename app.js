@@ -7,6 +7,8 @@ const app = express();
 const mongo = require('mongodb');
 const c = console.log;
 const url = "mongodb://localhost:27017/samplesite";
+let MongoClient = mongodb.MongoClient;
+
 app.get("/",(req,res)=>{
 	MongoClient.connect(url,(err,db)=>{
 		if(err){c("err",err)}else{
