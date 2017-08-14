@@ -7,14 +7,23 @@ const app = express();
 const mongo = require('mongodb');
 const c = console.log;
 const url = "mongodb://localhost:27017/samplesite";
-let MongoClient = mongodb.MongoClient;
+let MongoClient = mongo.MongoClient;
 
 app.get("/",(req,res)=>{
 	MongoClient.connect(url,(err,db)=>{
 		if(err){c("err",err)}else{
 			c("connection established");
-			var collection = db.collection('students');
-			collection.find({}).toArray
+			let collection = db.collection('students');
+			collection.find({}).toArray((err,result)=>{
+				if(err){
+					res.send(err);
+				}else if(result.length){
+					res.send(JSON.stringify(result));
+					res.end();
+				}else{
+					res.send("no documents found")
+				}
+			})
 		}
 	})
 })
